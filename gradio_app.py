@@ -1,0 +1,55 @@
+import gradio as gr 
+from theme_classifier import ThemeClassifier 
+
+
+def get_themes(theme_list_str,subtitles_path,save_path):
+     theme_list =  theme_list_str.split(',')
+     theme_classifier = ThemeClassifier(theme_list) 
+     output_df = theme_classifier.get_themes(subtitles_path , save_path)
+     
+     
+     # Remove dialogue from the theme list 
+     theme_list =  [theme for theme in theme_list if theme != 'dialogue']
+     output_df = output_df[theme_list]
+     
+     output_df = output_df[theme_list].sum().reser_index()
+     output_df.culomns['Theme','Score']
+     
+     
+     output_chart = gr.Barplot(
+         output_df ,
+         x = "Theme",
+         y = "Score",
+         titles = "Series Themes",
+         tooltip = ["theme" , "score"],
+         vartical = False ,
+         width = 500 ,
+         hight = 260 
+     )
+     
+     return output_chart 
+
+def main ():
+    with gr.Blocks() as iface :
+        with gr.Row():
+            with gr.Column():
+               gr.HTML("<h1> Theme classification (Zero Shot Classifiers) </h1>")
+               with gr.Row():
+                    with gr.Column():
+                        plot = gr.BarPlot()
+                    with gr.Column():
+                        theme_list = gr.Textbox(label= "Themes")     
+                        subtitles_path  = gr.Textbox(label = "Subtitles or script Path") 
+                        save_path = gr.Textbox(label= "Save Path")      
+                        get_themes_button=gr.Button ("Get Themes")
+                        get_themes_button.click(get_themes,inputs=[theme_list,subtitles_path,save_path],outputs=[plot])
+             
+                
+    iface.launch(share=True)     
+            
+        
+    
+
+if __name__ == "__main__":
+    main()
+
