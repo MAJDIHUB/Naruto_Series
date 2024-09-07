@@ -34,7 +34,7 @@ class ThemeClassifier():
     def get_themes_inference(self ,script):
       script_sentences = sent_tokenize(script)
     
-     #Batch sentances
+     
       sentence_batch_size = 20 
       script_batches = []
       for index in range (0 , len(script_sentences),sentence_batch_size):
@@ -42,13 +42,13 @@ class ThemeClassifier():
         script_batches.append(sent) 
     
     
-     #run Model  
+      
       theme_output = self.theme_classifier(
-        script_batches[:2], # extra 
+        script_batches ,
         self.theme_list,
         multi_label=True
      )
-      #Wrangle Output 
+      
       themes = {}
       for output in theme_output :
         for label,score in zip (output['labels'],output['scores']):
@@ -61,20 +61,21 @@ class ThemeClassifier():
       return themes   
   
     def get_themes (self , dataset_path , save_path=None):
-        #Read save output if exist
+        
         if save_path is not None and os.path.exists(save_path) :
           df = pd.read_csv(save_path)
           return df  
           
-        #load Dataset 
-        df = load_subtitles_dataset(dataset_path)
-        #extra
-        df =df.head(2)
         
-        #Run inference
+        df = load_subtitles_dataset(dataset_path)
+        
+        
+       
+        
+        
         output_themes = df ['script'].apply(self.get_themes_inference) 
         
-        # Save output 
+        
         themes_df = pd.DataFrame(output_themes.tolist())
         df[themes_df.columns] = themes_df
         
