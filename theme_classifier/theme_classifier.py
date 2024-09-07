@@ -1,14 +1,15 @@
 from transformers import pipeline
-#import torch 
+import torch 
 from nltk import sent_tokenize
 import pandas as pd 
 import numpy as np 
 import os 
 import sys
 import pathlib
+import nltk 
 folder_path = pathlib.Path(__file__).parent.resolve()
 sys.path.append(os.path.join(folder_path,'../'))
-from utils import load_subtitles_dataset 
+from utils import load_subtitles_dataset
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
@@ -30,31 +31,32 @@ class ThemeClassifier():
     )
      return theme_classifier
 
-    def get_themes_inference(script):
-      script_sentances = sent_tokenize(script)
+    def get_themes_inference(self ,script):
+      script_sentences = sent_tokenize(script)
     
      #Batch sentances
-      sentances_batch_size = 20 
+      sentence_batch_size = 20 
       script_batches = []
-      for index in range (0 , len(script_sentances),sentance_batch_size):
-        sent = " ".join(script_sentances[index:index+sentance_batch_size])
-      script_batches.append(sent) 
+      for index in range (0 , len(script_sentences),sentence_batch_size):
+        sent = " ".join(script_sentences[index:index+sentence_batch_size])
+        script_batches.append(sent) 
     
     
      #run Model  
-      theme_output = theme_classifier(
+      theme_output = self.theme_classifier(
         script_batches[:2], # extra 
-        theme_list,
+        self.theme_list,
         multi_label=True
      )
       #Wrangle Output 
       themes = {}
       for output in theme_output :
-          for label,score in zip (output['labels'],output['scores']):
-             if label not in themes  :
-                themes[label]=[]    
-             themes[label].append(score)
-      themes = {key :np.mean(np.array(value)) for key,valu in themes.items() }      
+        for label,score in zip (output['labels'],output['scores']):
+            if label not in themes  :
+              themes[label]=[]    
+            themes[label].append(score)
+             
+      themes = {key :np.mean(np.array(value)) for key,value in themes.items() }      
     
       return themes   
   
