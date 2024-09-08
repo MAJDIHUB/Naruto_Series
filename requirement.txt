@@ -7,4 +7,6 @@ evaluate==0.4.2
 git+https://github.com/huggingface/peft.git
 trl==0.9.6
 bitsandbytes==0.43.0
-
+pydantic==2.8.2
+pydantic-core==2.20.1
+fastapi==0.112.4
