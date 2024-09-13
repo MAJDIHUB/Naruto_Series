@@ -1,11 +1,11 @@
 import gradio as gr 
 from theme_classifier import ThemeClassifier 
-# from charachter_network import NamedEntityRecognizer , CharacterNetworkGenerator
+from charachter_network import NamedEntityRecognizer , CharacterNetworkGenerator
 # from text_classification import JutsuClassifier
 # from dotenv import load_dotenv 
 # from character_chatbot import CharacterChatBot 
-# import os 
-# load_dotenv()
+#import os 
+#load_dotenv()
 
 
 def get_themes(theme_list_str,subtitles_path,save_path):
@@ -35,15 +35,15 @@ def get_themes(theme_list_str,subtitles_path,save_path):
      
      return output_chart 
 
-# def get_character_network(subtitles_path , ner_path):
-#     ner = NamedEntityRecognizer() 
-#     ner_df  =  ner.get_ners(subtitles_path , ner_path)
+def get_character_network(subtitles_path , ner_path):
+    ner = NamedEntityRecognizer() 
+    ner_df  =  ner.get_ners(subtitles_path , ner_path)
     
-#     character_network_generator =CharacterNetworkGenerator 
-#     relationship_df = character_network_generator.generate_character_network(ner_df) 
-#     html =character_network_generator.drow_network_graph(relationship_df)
+    character_network_generator =CharacterNetworkGenerator() 
+    relationship_df = character_network_generator.generate_character_network(ner_df) 
+    html =character_network_generator.draw_network_graph(relationship_df)
     
-#     return html 
+    return html 
     
     
 # def classify_text (text_classification_model , text_classification_data_path,text_to_classify):
@@ -82,19 +82,19 @@ def main ():
                         get_themes_button=gr.Button ("Get Themes")
                         get_themes_button.click(get_themes,inputs=[theme_list,subtitles_path,save_path],outputs=[plot])
              
-        # C
-        # with gr.Row():
-        #     with gr.Column():
-        #        gr.HTML("<h1> Character Network (NERs and Graphs) </h1>")
-        #        with gr.Row():
-        #             with gr.Column():
-        #                 network_html = gr.HTML() 
-        #             with gr.Column():
-        #                 subtitles_path = gr.Textbox(label= "Subtitles or Script Path")     
-        #                 ner_path  = gr.Textbox(label = "NERs save path") 
-        #                 get_network_graph_button = gr.Button("Get Character Network")      
+       # C
+        with gr.Row():
+            with gr.Column():
+               gr.HTML("<h1> Character Network (NERs and Graphs) </h1>")
+               with gr.Row():
+                    with gr.Column():
+                        network_html = gr.HTML() 
+                    with gr.Column():
+                        subtitles_path = gr.Textbox(label= "Subtitles or Script Path")     
+                        ner_path  = gr.Textbox(label = "NERs save path") 
+                        get_network_graph_button = gr.Button("Get Character Network")      
                         
-        #                 get_network_graph_button.click(get_character_network,inputs=[subtitles_path,ner_path],outputs=[network_html])
+                        get_network_graph_button.click(get_character_network,inputs=[subtitles_path,ner_path],outputs=[network_html])
                         
         # # Text Classifications with LLMs
         # with gr.Row():
