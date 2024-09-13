@@ -51,6 +51,7 @@ class NamedEntityRecognizer():
         df = load_subtitles_dataset(dataset_path)
         
         
+        
         #run inference 
         df['ners'] = df['script'].apply(self.get_ners_inference)
         
