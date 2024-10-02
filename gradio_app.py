@@ -3,7 +3,7 @@ from theme_classifier import ThemeClassifier
 from charachter_network import NamedEntityRecognizer , CharacterNetworkGenerator
 from text_classification import JutsuClassifier
 from dotenv import load_dotenv 
-# from character_chatbot import CharacterChatBot 
+from character_chatbot import CharacterChatBot 
 import os 
 load_dotenv()
 
@@ -56,14 +56,14 @@ def classify_text (text_classification_model , text_classification_data_path,tex
     
     return output
     
-# def chat_with_character_chatbot(message , history):
-#     character_chatbot = CharacterChatBot("meta-llama/Llama-2-7b-chat-hf",
-#                                          huggingface_token = os.getenv('huggingface_token'),
-#                                          )
+def chat_with_character_chatbot(message , history):
+    character_chatbot = CharacterChatBot("meta-llama/Llama-3.1-8B-Instruct",
+                                         huggingface_token = os.getenv('huggingface_token'),
+                                         )
     
-#     output = character_chatbot.chat(message, history )
-#     output = output['content'].strip() # type: ignore
-#     return output 
+    output = character_chatbot.chat(message, history )
+    output = output['content'].strip()  
+    return output 
 
 
 
@@ -113,10 +113,10 @@ def main ():
                         classify_text_button.click(classify_text ,inputs=[text_classification_model,text_classification_data_path,text_to_clasify],outputs=[text_classification_output])
         
         #character chatbot section 
-        # with gr.Row():
-        #     with gr.Column():
-        #         gr.HTML ("<h1> Character Chatbot </h1>")
-        #         gr.ChatInterface(chat_with_character_chatbot)                 
+        with gr.Row():
+            with gr.Column():
+                gr.HTML ("<h1> Character Chatbot </h1>")
+                gr.ChatInterface(chat_with_character_chatbot)                 
                 
     iface.launch(share=True)     
             
