@@ -57,7 +57,7 @@ def classify_text (text_classification_model , text_classification_data_path,tex
     return output
     
 def chat_with_character_chatbot(message , history):
-    character_chatbot = CharacterChatBot("meta-llama/Llama-3.1-8B-Instruct",
+    character_chatbot = CharacterChatBot("AbdullahTarek/Naruto_Llama-3-8B",
                                          huggingface_token = os.getenv('huggingface_token'),
                                          )
     
